@@ -1,378 +1,64 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Daily Papers - 最新论文分享、解读、精选推�?>
-    <meta name="keywords" content="论文, 论文分享, AI, NLP, CV, Machine Learning, Daily Papers">
-    <title>Daily Papers - 论文分享平台</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        header {
-            padding: 15px 0;
-            background: rgba(0,0,0,0.1);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            color: white;
-            font-size: 1.5em;
-            font-weight: 700;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 1em;
-            transition: opacity 0.3s ease;
-        }
-        
-        .nav-links a:hover {
-            opacity: 0.8;
-        }
-        
-        .nav-links .btn-primary {
-            background: white;
-            color: #667eea;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-links .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        main {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            width: 100%;
-        }
-        
-        .hero {
-            text-align: center;
-            color: white;
-            margin-bottom: 60px;
-        }
-        
-        .hero h1 {
-            font-size: 3.5em;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-            line-height: 1.2;
-        }
-        
-        .hero p {
-            font-size: 1.3em;
-            margin-bottom: 30px;
-            opacity: 0.95;
-            line-height: 1.6;
-        }
-        
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            padding: 14px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.05em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-        
-        .btn-white {
-            background: white;
-            color: #667eea;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-        
-        .btn-white:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-        
-        .btn-outline:hover {
-            background: white;
-            color: #667eea;
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 60px;
-        }
-        
-        .feature-card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 12px;
-            color: white;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            background: rgba(255,255,255,0.15);
-            transform: translateY(-5px);
-        }
-        
-        .feature-icon {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-        }
-        
-        .feature-card h3 {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        
-        .feature-card p {
-            font-size: 0.95em;
-            opacity: 0.9;
-            line-height: 1.6;
-        }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 60px;
-            padding: 40px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        .stat-item {
-            text-align: center;
-            color: white;
-        }
-        
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        
-        .stat-label {
-            font-size: 1em;
-            opacity: 0.9;
-        }
-        
-        footer {
-            background: rgba(0,0,0,0.2);
-            color: white;
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: auto;
-        }
-        
-        footer p {
-            margin-bottom: 10px;
-        }
-        
-        footer a {
-            color: #fff;
-            text-decoration: none;
-            transition: opacity 0.3s ease;
-        }
-        
-        footer a:hover {
-            opacity: 0.7;
-        }
-        
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.2em;
-            }
-            
-            .hero p {
-                font-size: 1.1em;
-            }
-            
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .nav-links {
-                flex-direction: column;
-                gap: 10px;
-                width: 100%;
-            }
-            
-            .nav-links a {
-                text-align: center;
-            }
-            
-            .cta-buttons {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-                text-align: center;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="header-content">
-            <a href="/" class="logo">
-                📚 Daily Papers
-            </a>
-            <nav class="nav-links">
-                <a href="papers.html">论文�?/a>
-                <a href="#about">关于</a>
-                <a href="https://github.com/DavidWisdom/davidwisdom.github.io" target="_blank">GitHub</a>
-                <a href="papers.html" class="btn-primary">开始浏�?/a>
-            </nav>
-        </div>
-    </header>
-    
-    <main>
-        <div class="container">
-            <div class="hero">
-                <h1>📚 Daily Papers</h1>
-                <p>发现、分享、解读最前沿的学术论�?br>汇聚 AI、NLP、CV 等领域的精选内�?/p>
-                <div class="cta-buttons">
-                    <a href="papers.html" class="btn btn-white">📖 浏览论文�?/a>
-                    <a href="#about" class="btn btn-outline">了解更多</a>
-                </div>
-            </div>
-            
-            <div class="features">
-                <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3>智能搜索</h3>
-                    <p>快速搜索论文标题、作者和关键词，精准定位你感兴趣的内�?/p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🏷�?/div>
-                    <h3>分类浏览</h3>
-                    <p>AI、NLP、CV 等多个专业分类，系统化浏览论文资�?/p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">📅</div>
-                    <h3>最新推�?/h3>
-                    <p>每日更新最新论文，第一时间掌握学术前沿动�?/p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">💡</div>
-                    <h3>精选解�?/h3>
-                    <p>专业的论文解读和点评，帮助你深入理解研究内容</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🔗</div>
-                    <h3>资源链接</h3>
-                    <p>直链论文原文、代码实现和相关资源，一键获取完整信�?/p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🚀</div>
-                    <h3>持续优化</h3>
-                    <p>不断完善平台功能，为用户提供更好的论文阅读体�?/p>
-                </div>
-            </div>
-            
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-number">500+</div>
-                    <div class="stat-label">精选论�?/div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">10+</div>
-                    <div class="stat-label">研究方向</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">2024+</div>
-                    <div class="stat-label">更新年份</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">持续更新</div>
-                </div>
-            </div>
-        </div>
-    </main>
-    
-    <footer>
-        <p>&copy; 2024 Daily Papers | 论文分享平台</p>
-        <p>
-            <a href="PAPERS_GUIDE.md">使用指南</a> | 
-            <a href="https://github.com/DavidWisdom/davidwisdom.github.io" target="_blank">GitHub</a> | 
-            <a href="mailto:contact@example.com">联系我们</a>
-        </p>
-    </footer>
-</body>
-</html>
-
+<!doctype html><html lang=zh class=no-js> <head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="AI Wiki"><meta name=author content="AI Wiki Team"><link href=https://davidwisdom.github.io/ rel=canonical><link href=discussion/ rel=next><link rel=icon href=assets/images/favicon.png><meta name=generator content="mkdocs-1.5.3, mkdocs-material-9.5.15"><title>简介 - AI Wiki</title><link rel=stylesheet href=assets/stylesheets/main.7e359304.min.css><link rel=stylesheet href=assets/stylesheets/palette.06af60db.min.css><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Noto+Sans:300,300i,400,400i,700,700i%7CSource+Code+Pro:400,400i,700,700i&display=fallback"><style>:root{--md-text-font:"Noto Sans";--md-code-font:"Source Code Pro"}</style><link rel=stylesheet href=static/css/extra.css><script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script></head> <body dir=ltr data-md-color-scheme=preference data-md-color-primary=white data-md-color-accent=red> <input class=md-toggle data-md-toggle=drawer type=checkbox id=__drawer autocomplete=off> <input class=md-toggle data-md-toggle=search type=checkbox id=__search autocomplete=off> <label class=md-overlay for=__drawer></label> <div data-md-component=skip> <a href=#_1 class=md-skip> 跳转至 </a> </div> <div data-md-component=announce> </div> <header class="md-header md-header--shadow md-header--lifted" data-md-component=header> <nav class="md-header__inner md-grid" aria-label=页眉> <a href=. title="AI Wiki" class="md-header__button md-logo" aria-label="AI Wiki" data-md-component=logo> <img src=static/img/logo.png alt=logo> </a> <label class="md-header__button md-icon" for=__drawer> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg> </label> <div class=md-header__title data-md-component=header-title> <div class=md-header__ellipsis> <div class=md-header__topic> <span class=md-ellipsis> AI Wiki </span> </div> <div class=md-header__topic data-md-component=header-topic> <span class=md-ellipsis> 简介 </span> </div> </div> </div> <div class=md-header__option> <div class=md-select> <button class="md-header__button md-icon" aria-label=选择当前语言> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.52 17.52 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04M18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12m-2.62 7 1.62-4.33L19.12 17h-3.24Z"/></svg> </button> <div class=md-select__inner> <ul class=md-select__list> <li class=md-select__item> <a href=/ hreflang class=md-select__link> zh - 汉语 </a> </li> <li class=md-select__item> <a href=/en/ hreflang class=md-select__link> en - English </a> </li> </ul> </div> </div> </div> <label class="md-header__button md-icon" for=__search> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg> </label> <div class=md-search data-md-component=search role=dialog> <label class=md-search__overlay for=__search></label> <div class=md-search__inner role=search> <form class=md-search__form name=search> <input type=text class=md-search__input name=query aria-label=搜索 placeholder=搜索 autocapitalize=off autocorrect=off autocomplete=off spellcheck=false data-md-component=search-query required> <label class="md-search__icon md-icon" for=__search> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg> </label> <nav class=md-search__options aria-label=查找> <a href=javascript:void(0) class="md-search__icon md-icon" title=分享 aria-label=分享 data-clipboard data-clipboard-text data-md-component=search-share tabindex=-1> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg> </a> <button type=reset class="md-search__icon md-icon" title=清空当前内容 aria-label=清空当前内容 tabindex=-1> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg> </button> </nav> <div class=md-search__suggest data-md-component=search-suggest></div> </form> <div class=md-search__output> <div class=md-search__scrollwrap data-md-scrollfix> <div class=md-search-result data-md-component=search-result> <div class=md-search-result__meta> 正在初始化搜索引擎 </div> <ol class=md-search-result__list role=presentation></ol> </div> </div> </div> </div> </div> <div class=md-header__source> <a href=https://github.com/DavidWisdom/davidwisdom.github.io title=前往仓库 class=md-source data-md-component=source> <div class="md-source__icon md-icon"> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 480 512"><!-- Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg> </div> <div class=md-source__repository> AI Wiki </div> </a> </div> </nav> <nav class=md-tabs aria-label=标签 data-md-component=tabs> <div class=md-grid> <ul class=md-tabs__list> <li class="md-tabs__item md-tabs__item--active"> <a href=. class=md-tabs__link> Start </a> </li> <li class=md-tabs__item> <a href=cpp/ class=md-tabs__link> C++ </a> </li> <li class=md-tabs__item> <a href=python/ class=md-tabs__link> Python </a> </li> <li class=md-tabs__item> <a href=leetcode/ class=md-tabs__link> LeetCode </a> </li> <li class=md-tabs__item> <a href=database/ class=md-tabs__link> 数据库 </a> </li> <li class=md-tabs__item> <a href=network/ class=md-tabs__link> 计算机网络 </a> </li> <li class=md-tabs__item> <a href=os/ class=md-tabs__link> 操作系统 </a> </li> <li class=md-tabs__item> <a href=compiler/ class=md-tabs__link> 编译原理 </a> </li> <li class=md-tabs__item> <a href=design-pattern/ class=md-tabs__link> 设计模式 </a> </li> <li class=md-tabs__item> <a href=ai/ class=md-tabs__link> 人工智能 </a> </li> <li class=md-tabs__item> <a href=cv/ class=md-tabs__link> 计算机视觉 </a> </li> <li class=md-tabs__item> <a href=nlp/ class=md-tabs__link> 自然语言处理 </a> </li> <li class=md-tabs__item> <a href=multimodal/ class=md-tabs__link> 多模态 </a> </li> <li class=md-tabs__item> <a href=llm/instructgpt/ class=md-tabs__link> 大模型 </a> </li> <li class=md-tabs__item> <a href=self-driving/ class=md-tabs__link> 自动驾驶 </a> </li> <li class=md-tabs__item> <a href=papers.html class=md-tabs__link> Daily Papers </a> </li> </ul> </div> </nav> </header> <div class=md-container data-md-component=container> <main class=md-main data-md-component=main> <div class="md-main__inner md-grid"> <div class="md-sidebar md-sidebar--primary" data-md-component=sidebar data-md-type=navigation> <div class=md-sidebar__scrollwrap> <div class=md-sidebar__inner> <nav class="md-nav md-nav--primary md-nav--lifted" aria-label=导航栏 data-md-level=0> <label class=md-nav__title for=__drawer> <a href=. title="AI Wiki" class="md-nav__button md-logo" aria-label="AI Wiki" data-md-component=logo> <img src=static/img/logo.png alt=logo> </a> AI Wiki </label> <div class=md-nav__source> <a href=https://github.com/DavidWisdom/davidwisdom.github.io title=前往仓库 class=md-source data-md-component=source> <div class="md-source__icon md-icon"> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 480 512"><!-- Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg> </div> <div class=md-source__repository> AI Wiki </div> </a> </div> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_1 checked> <label class=md-nav__link for=__nav_1 id=__nav_1_label tabindex> <span class=md-ellipsis> Start </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_1_label aria-expanded=true> <label class=md-nav__title for=__nav_1> <span class="md-nav__icon md-icon"></span> Start </label> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--active"> <input class="md-nav__toggle md-toggle" type=checkbox id=__toc> <label class="md-nav__link md-nav__link--active" for=__toc> <span class=md-ellipsis> 简介 </span> <span class="md-nav__icon md-icon"></span> </label> <a href=. class="md-nav__link md-nav__link--active"> <span class=md-ellipsis> 简介 </span> </a> <nav class="md-nav md-nav--secondary" aria-label=目录> <label class=md-nav__title for=__toc> <span class="md-nav__icon md-icon"></span> 目录 </label> <ul class=md-nav__list data-md-component=toc data-md-scrollfix> <li class=md-nav__item> <a href=#material-color-palette class=md-nav__link> <span class=md-ellipsis> Material color palette 颜色主题 </span> </a> <nav class=md-nav aria-label="Material color palette 颜色主题"> <ul class=md-nav__list> <li class=md-nav__item> <a href=#color-scheme class=md-nav__link> <span class=md-ellipsis> Color Scheme 配色方案 </span> </a> </li> <li class=md-nav__item> <a href=#primary-colors class=md-nav__link> <span class=md-ellipsis> Primary colors 主色 </span> </a> </li> <li class=md-nav__item> <a href=#accent-colors class=md-nav__link> <span class=md-ellipsis> Accent colors 辅助色 </span> </a> </li> </ul> </nav> </li> </ul> </nav> </li> <li class=md-nav__item> <a href=discussion/ class=md-nav__link> <span class=md-ellipsis> 讨论交流 </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_2> <label class=md-nav__link for=__nav_2 id=__nav_2_label tabindex=0> <span class=md-ellipsis> C++ </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_2_label aria-expanded=false> <label class=md-nav__title for=__nav_2> <span class="md-nav__icon md-icon"></span> C++ </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=cpp/ class=md-nav__link> <span class=md-ellipsis> 简介 </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_3> <label class=md-nav__link for=__nav_3 id=__nav_3_label tabindex=0> <span class=md-ellipsis> Python </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_3_label aria-expanded=false> <label class=md-nav__title for=__nav_3> <span class="md-nav__icon md-icon"></span> Python </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=python/ class=md-nav__link> <span class=md-ellipsis> 简介 </span> </a> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_3_2> <label class=md-nav__link for=__nav_3_2 id=__nav_3_2_label tabindex=0> <span class=md-ellipsis> Numpy </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_3_2_label aria-expanded=false> <label class=md-nav__title for=__nav_3_2> <span class="md-nav__icon md-icon"></span> Numpy </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=python/numpy/ class=md-nav__link> <span class=md-ellipsis> Numpy </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_3_3> <label class=md-nav__link for=__nav_3_3 id=__nav_3_3_label tabindex=0> <span class=md-ellipsis> Torch </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_3_3_label aria-expanded=false> <label class=md-nav__title for=__nav_3_3> <span class="md-nav__icon md-icon"></span> Torch </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=python/torch/ class=md-nav__link> <span class=md-ellipsis> Torch </span> </a> </li> </ul> </nav> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_4> <label class=md-nav__link for=__nav_4 id=__nav_4_label tabindex=0> <span class=md-ellipsis> LeetCode </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_4_label aria-expanded=false> <label class=md-nav__title for=__nav_4> <span class="md-nav__icon md-icon"></span> LeetCode </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=leetcode/ class=md-nav__link> <span class=md-ellipsis> 简介 </span> </a> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_4_2> <label class=md-nav__link for=__nav_4_2 id=__nav_4_2_label tabindex=0> <span class=md-ellipsis> 滑动窗口法 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_4_2_label aria-expanded=false> <label class=md-nav__title for=__nav_4_2> <span class="md-nav__icon md-icon"></span> 滑动窗口法 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=leetcode/3090/ class=md-nav__link> <span class=md-ellipsis> 3090. 每个字符最多出现两次的最长子字符串 </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_4_3> <label class=md-nav__link for=__nav_4_3 id=__nav_4_3_label tabindex=0> <span class=md-ellipsis> 单调栈 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_4_3_label aria-expanded=false> <label class=md-nav__title for=__nav_4_3> <span class="md-nav__icon md-icon"></span> 单调栈 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=leetcode/42/ class=md-nav__link> <span class=md-ellipsis> 42. 接雨水 </span> </a> </li> <li class=md-nav__item> <a href=leetcode/84/ class=md-nav__link> <span class=md-ellipsis> 84. 柱状图中最大的矩形 </span> </a> </li> <li class=md-nav__item> <a href=leetcode/85/ class=md-nav__link> <span class=md-ellipsis> 85. 最大矩形 </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_4_4> <label class=md-nav__link for=__nav_4_4 id=__nav_4_4_label tabindex=0> <span class=md-ellipsis> 双指针 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_4_4_label aria-expanded=false> <label class=md-nav__title for=__nav_4_4> <span class="md-nav__icon md-icon"></span> 双指针 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=leetcode/11/ class=md-nav__link> <span class=md-ellipsis> 11. 盛最多水的容器 </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_4_5> <label class=md-nav__link for=__nav_4_5 id=__nav_4_5_label tabindex=0> <span class=md-ellipsis> 贪心算法 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_4_5_label aria-expanded=false> <label class=md-nav__title for=__nav_4_5> <span class="md-nav__icon md-icon"></span> 贪心算法 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=leetcode/45/ class=md-nav__link> <span class=md-ellipsis> 45. 跳跃游戏II </span> </a> </li> </ul> </nav> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_5> <label class=md-nav__link for=__nav_5 id=__nav_5_label tabindex=0> <span class=md-ellipsis> 数据库 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_5_label aria-expanded=false> <label class=md-nav__title for=__nav_5> <span class="md-nav__icon md-icon"></span> 数据库 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=database/ class=md-nav__link> <span class=md-ellipsis> Index </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_6> <label class=md-nav__link for=__nav_6 id=__nav_6_label tabindex=0> <span class=md-ellipsis> 计算机网络 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_6_label aria-expanded=false> <label class=md-nav__title for=__nav_6> <span class="md-nav__icon md-icon"></span> 计算机网络 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=network/ class=md-nav__link> <span class=md-ellipsis> 简介 </span> </a> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_6_2> <label class=md-nav__link for=__nav_6_2 id=__nav_6_2_label tabindex=0> <span class=md-ellipsis> 网络层 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_6_2_label aria-expanded=false> <label class=md-nav__title for=__nav_6_2> <span class="md-nav__icon md-icon"></span> 网络层 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=network/network-layer/ip/ class=md-nav__link> <span class=md-ellipsis> Ip </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_6_3> <label class=md-nav__link for=__nav_6_3 id=__nav_6_3_label tabindex=0> <span class=md-ellipsis> 传输层 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_6_3_label aria-expanded=false> <label class=md-nav__title for=__nav_6_3> <span class="md-nav__icon md-icon"></span> 传输层 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=network/transport-layer/tcp/tcp/ class=md-nav__link> <span class=md-ellipsis> Tcp </span> </a> </li> <li class=md-nav__item> <a href=network/transport-layer/tcp/3/ class=md-nav__link> <span class=md-ellipsis> 3 </span> </a> </li> <li class=md-nav__item> <a href=network/transport-layer/tcp/4/ class=md-nav__link> <span class=md-ellipsis> 4 </span> </a> </li> <li class=md-nav__item> <a href=network/transport-layer/tcp/reliable/ class=md-nav__link> <span class=md-ellipsis> TCP可靠传输 </span> </a> </li> </ul> </nav> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_7> <label class=md-nav__link for=__nav_7 id=__nav_7_label tabindex=0> <span class=md-ellipsis> 操作系统 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_7_label aria-expanded=false> <label class=md-nav__title for=__nav_7> <span class="md-nav__icon md-icon"></span> 操作系统 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=os/ class=md-nav__link> <span class=md-ellipsis> 简介 </span> </a> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_7_2> <label class=md-nav__link for=__nav_7_2 id=__nav_7_2_label tabindex=0> <span class=md-ellipsis> 内存管理 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_7_2_label aria-expanded=false> <label class=md-nav__title for=__nav_7_2> <span class="md-nav__icon md-icon"></span> 内存管理 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=os/memory/mmu/ class=md-nav__link> <span class=md-ellipsis> 虚拟内存 </span> </a> </li> <li class=md-nav__item> <a href=os/memory/malloc/ class=md-nav__link> <span class=md-ellipsis> Malloc </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_7_3> <label class=md-nav__link for=__nav_7_3 id=__nav_7_3_label tabindex=0> <span class=md-ellipsis> 网络系统 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_7_3_label aria-expanded=false> <label class=md-nav__title for=__nav_7_3> <span class="md-nav__icon md-icon"></span> 网络系统 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=os/io/dma/ class=md-nav__link> <span class=md-ellipsis> Dma </span> </a> </li> <li class=md-nav__item> <a href=os/io/mmap/ class=md-nav__link> <span class=md-ellipsis> 内存映射 </span> </a> </li> <li class=md-nav__item> <a href=os/io/zerocopy/ class=md-nav__link> <span class=md-ellipsis> 零拷贝 </span> </a> </li> <li class=md-nav__item> <a href=os/io/io/ class=md-nav__link> <span class=md-ellipsis> Io </span> </a> </li> </ul> </nav> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_8> <label class=md-nav__link for=__nav_8 id=__nav_8_label tabindex=0> <span class=md-ellipsis> 编译原理 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_8_label aria-expanded=false> <label class=md-nav__title for=__nav_8> <span class="md-nav__icon md-icon"></span> 编译原理 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=compiler/ class=md-nav__link> <span class=md-ellipsis> 简介 </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_9> <label class=md-nav__link for=__nav_9 id=__nav_9_label tabindex=0> <span class=md-ellipsis> 设计模式 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_9_label aria-expanded=false> <label class=md-nav__title for=__nav_9> <span class="md-nav__icon md-icon"></span> 设计模式 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=design-pattern/ class=md-nav__link> <span class=md-ellipsis> 设计模式简介 </span> </a> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_9_2> <label class=md-nav__link for=__nav_9_2 id=__nav_9_2_label tabindex=0> <span class=md-ellipsis> 创建型模式 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_9_2_label aria-expanded=false> <label class=md-nav__title for=__nav_9_2> <span class="md-nav__icon md-icon"></span> 创建型模式 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=design-pattern/construct/singleton/ class=md-nav__link> <span class=md-ellipsis> 单例模式 </span> </a> </li> </ul> </nav> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_10> <label class=md-nav__link for=__nav_10 id=__nav_10_label tabindex=0> <span class=md-ellipsis> 人工智能 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_10_label aria-expanded=false> <label class=md-nav__title for=__nav_10> <span class="md-nav__icon md-icon"></span> 人工智能 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=ai/ class=md-nav__link> <span class=md-ellipsis> 人工智能简介 </span> </a> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_10_2> <label class=md-nav__link for=__nav_10_2 id=__nav_10_2_label tabindex=0> <span class=md-ellipsis> 人工智能数学基础 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_10_2_label aria-expanded=false> <label class=md-nav__title for=__nav_10_2> <span class="md-nav__icon md-icon"></span> 人工智能数学基础 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=ai/math/optimization/ class=md-nav__link> <span class=md-ellipsis> 凸优化问题 </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_10_3> <label class=md-nav__link for=__nav_10_3 id=__nav_10_3_label tabindex=0> <span class=md-ellipsis> 机器学习 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_10_3_label aria-expanded=false> <label class=md-nav__title for=__nav_10_3> <span class="md-nav__icon md-icon"></span> 机器学习 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=ai/ml/ class=md-nav__link> <span class=md-ellipsis> Index </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_10_4> <label class=md-nav__link for=__nav_10_4 id=__nav_10_4_label tabindex=0> <span class=md-ellipsis> 深度学习 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_10_4_label aria-expanded=false> <label class=md-nav__title for=__nav_10_4> <span class="md-nav__icon md-icon"></span> 深度学习 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=ai/dl/ class=md-nav__link> <span class=md-ellipsis> Index </span> </a> </li> <li class=md-nav__item> <a href=ai/dl/cnn/ class=md-nav__link> <span class=md-ellipsis> Cnn </span> </a> </li> <li class=md-nav__item> <a href=ai/dl/rnn/ class=md-nav__link> <span class=md-ellipsis> Rnn </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_10_5> <label class=md-nav__link for=__nav_10_5 id=__nav_10_5_label tabindex=0> <span class=md-ellipsis> 强化学习 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_10_5_label aria-expanded=false> <label class=md-nav__title for=__nav_10_5> <span class="md-nav__icon md-icon"></span> 强化学习 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=ai/rl/ class=md-nav__link> <span class=md-ellipsis> 简介 </span> </a> </li> <li class=md-nav__item> <a href=ai/rl/qlearning/ class=md-nav__link> <span class=md-ellipsis> Qlearning </span> </a> </li> <li class=md-nav__item> <a href=ai/rl/dqn/ class=md-nav__link> <span class=md-ellipsis> DQN </span> </a> </li> </ul> </nav> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_11> <label class=md-nav__link for=__nav_11 id=__nav_11_label tabindex=0> <span class=md-ellipsis> 计算机视觉 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_11_label aria-expanded=false> <label class=md-nav__title for=__nav_11> <span class="md-nav__icon md-icon"></span> 计算机视觉 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=cv/ class=md-nav__link> <span class=md-ellipsis> 简介 </span> </a> </li> <li class=md-nav__item> <a href=cv/swin-transformer/ class=md-nav__link> <span class=md-ellipsis> Swin Transformer </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_12> <label class=md-nav__link for=__nav_12 id=__nav_12_label tabindex=0> <span class=md-ellipsis> 自然语言处理 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_12_label aria-expanded=false> <label class=md-nav__title for=__nav_12> <span class="md-nav__icon md-icon"></span> 自然语言处理 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=nlp/ class=md-nav__link> <span class=md-ellipsis> 简介 </span> </a> </li> <li class=md-nav__item> <a href=nlp/transformer/ class=md-nav__link> <span class=md-ellipsis> Transformer </span> </a> </li> <li class=md-nav__item> <a href=nlp/t5/ class=md-nav__link> <span class=md-ellipsis> T5 </span> </a> </li> <li class=md-nav__item> <a href=nlp/gpt/ class=md-nav__link> <span class=md-ellipsis> Gpt </span> </a> </li> <li class=md-nav__item> <a href=nlp/bert/ class=md-nav__link> <span class=md-ellipsis> BERT </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_13> <label class=md-nav__link for=__nav_13 id=__nav_13_label tabindex=0> <span class=md-ellipsis> 多模态 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_13_label aria-expanded=false> <label class=md-nav__title for=__nav_13> <span class="md-nav__icon md-icon"></span> 多模态 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=multimodal/ class=md-nav__link> <span class=md-ellipsis> 多模态简介 </span> </a> </li> <li class=md-nav__item> <a href=multimodal/clip/ class=md-nav__link> <span class=md-ellipsis> CLIP </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_14> <label class=md-nav__link for=__nav_14 id=__nav_14_label tabindex=0> <span class=md-ellipsis> 大模型 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_14_label aria-expanded=false> <label class=md-nav__title for=__nav_14> <span class="md-nav__icon md-icon"></span> 大模型 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=llm/instructgpt/ class=md-nav__link> <span class=md-ellipsis> Instructgpt </span> </a> </li> <li class=md-nav__item> <a href=llm/llama/ class=md-nav__link> <span class=md-ellipsis> Llama </span> </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_15> <label class=md-nav__link for=__nav_15 id=__nav_15_label tabindex=0> <span class=md-ellipsis> 自动驾驶 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=1 aria-labelledby=__nav_15_label aria-expanded=false> <label class=md-nav__title for=__nav_15> <span class="md-nav__icon md-icon"></span> 自动驾驶 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=self-driving/ class=md-nav__link> <span class=md-ellipsis> 简介 </span> </a> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_15_2> <label class=md-nav__link for=__nav_15_2 id=__nav_15_2_label tabindex=0> <span class=md-ellipsis> Autoware </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=2 aria-labelledby=__nav_15_2_label aria-expanded=false> <label class=md-nav__title for=__nav_15_2> <span class="md-nav__icon md-icon"></span> Autoware </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=self-driving/autoware/ class=md-nav__link> <span class=md-ellipsis> 简介 </span> </a> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle " type=checkbox id=__nav_15_2_2> <label class=md-nav__link for=__nav_15_2_2 id=__nav_15_2_2_label tabindex=0> <span class=md-ellipsis> Computing模块 </span> <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav data-md-level=3 aria-labelledby=__nav_15_2_2_label aria-expanded=false> <label class=md-nav__title for=__nav_15_2_2> <span class="md-nav__icon md-icon"></span> Computing模块 </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=self-driving/autoware/computing/open_planner/ class=md-nav__link> <span class=md-ellipsis> open_planner </span> </a> </li> </ul> </nav> </li> </ul> </nav> </li> </ul> </nav> </li> </ul> </nav> </div> </div> </div> <div class="md-sidebar md-sidebar--secondary" data-md-component=sidebar data-md-type=toc> <div class=md-sidebar__scrollwrap> <div class=md-sidebar__inner> <nav class="md-nav md-nav--secondary" aria-label=目录> <label class=md-nav__title for=__toc> <span class="md-nav__icon md-icon"></span> 目录 </label> <ul class=md-nav__list data-md-component=toc data-md-scrollfix> <li class=md-nav__item> <a href=#material-color-palette class=md-nav__link> <span class=md-ellipsis> Material color palette 颜色主题 </span> </a> <nav class=md-nav aria-label="Material color palette 颜色主题"> <ul class=md-nav__list> <li class=md-nav__item> <a href=#color-scheme class=md-nav__link> <span class=md-ellipsis> Color Scheme 配色方案 </span> </a> </li> <li class=md-nav__item> <a href=#primary-colors class=md-nav__link> <span class=md-ellipsis> Primary colors 主色 </span> </a> </li> <li class=md-nav__item> <a href=#accent-colors class=md-nav__link> <span class=md-ellipsis> Accent colors 辅助色 </span> </a> </li> </ul> </nav> </li> </ul> </nav> </div> </div> </div> <div class=md-content data-md-component=content> <article class="md-content__inner md-typeset"> <h1 id=_1>简介<a class=headerlink href=#_1 title="Permanent link">&para;</a></h1> <p>欢迎来到 <strong>AI Wiki</strong>。</p> <p><strong>AI Wiki</strong> 致力于成为一个免费开放且持续更新的 <strong>人工智能（artificial intelligence）</strong> 知识整合站点，大家可以在这里获取与人工智能相关的、有趣又实用的知识。</p> <p>本项目受 <a href=https://ctf-wiki.org/ >CTF Wiki</a> 的启发，在编写过程中参考了诸多资料，在此一并致谢。</p> <h2 id=material-color-palette>Material color palette 颜色主题<a class=headerlink href=#material-color-palette title="Permanent link">&para;</a></h2> <h3 id=color-scheme>Color Scheme 配色方案<a class=headerlink href=#color-scheme title="Permanent link">&para;</a></h3> <p>根据浏览器与系统设置自动切换明暗主题，也可手动切换</p> <div class=tx-switch> <button data-md-color-scheme=default><code>Default</code></button> <button data-md-color-scheme=slate><code>Slate</code></button> </div> <script>
+  var buttons = document.querySelectorAll("button[data-md-color-scheme]")
+  Array.prototype.forEach.call(buttons, function(button) {
+    button.addEventListener("click", function() {
+      document.body.dataset.mdColorScheme = this.dataset.mdColorScheme;
+      localStorage.setItem("data-md-color-scheme",this.dataset.mdColorScheme);
+    })
+  })
+</script> <h3 id=primary-colors>Primary colors 主色<a class=headerlink href=#primary-colors title="Permanent link">&para;</a></h3> <p>点击色块可更换主题的主色</p> <div class=tx-switch> <button data-md-color-primary=red><code>Red</code></button> <button data-md-color-primary=pink><code>Pink</code></button> <button data-md-color-primary=purple><code>Purple</code></button> <button data-md-color-primary=deep-purple><code>Deep Purple</code></button> <button data-md-color-primary=indigo><code>Indigo</code></button> <button data-md-color-primary=blue><code>Blue</code></button> <button data-md-color-primary=light-blue><code>Light Blue</code></button> <button data-md-color-primary=cyan><code>Cyan</code></button> <button data-md-color-primary=teal><code>Teal</code></button> <button data-md-color-primary=green><code>Green</code></button> <button data-md-color-primary=light-green><code>Light Green</code></button> <button data-md-color-primary=lime><code>Lime</code></button> <button data-md-color-primary=yellow><code>Yellow</code></button> <button data-md-color-primary=amber><code>Amber</code></button> <button data-md-color-primary=orange><code>Orange</code></button> <button data-md-color-primary=deep-orange><code>Deep Orange</code></button> <button data-md-color-primary=brown><code>Brown</code></button> <button data-md-color-primary=grey><code>Grey</code></button> <button data-md-color-primary=blue-grey><code>Blue Grey</code></button> <button data-md-color-primary=white><code>White</code></button> </div> <script>
+  var buttons = document.querySelectorAll("button[data-md-color-primary]");
+  Array.prototype.forEach.call(buttons, function(button) {
+    button.addEventListener("click", function() {
+      document.body.dataset.mdColorPrimary = this.dataset.mdColorPrimary;
+      localStorage.setItem("data-md-color-primary",this.dataset.mdColorPrimary);
+    })
+  })
+</script> <h3 id=accent-colors>Accent colors 辅助色<a class=headerlink href=#accent-colors title="Permanent link">&para;</a></h3> <p>点击色块更换主题的辅助色</p> <div class=tx-switch> <button data-md-color-accent=red><code>Red</code></button> <button data-md-color-accent=pink><code>Pink</code></button> <button data-md-color-accent=purple><code>Purple</code></button> <button data-md-color-accent=deep-purple><code>Deep Purple</code></button> <button data-md-color-accent=indigo><code>Indigo</code></button> <button data-md-color-accent=blue><code>Blue</code></button> <button data-md-color-accent=light-blue><code>Light Blue</code></button> <button data-md-color-accent=cyan><code>Cyan</code></button> <button data-md-color-accent=teal><code>Teal</code></button> <button data-md-color-accent=green><code>Green</code></button> <button data-md-color-accent=light-green><code>Light Green</code></button> <button data-md-color-accent=lime><code>Lime</code></button> <button data-md-color-accent=yellow><code>Yellow</code></button> <button data-md-color-accent=amber><code>Amber</code></button> <button data-md-color-accent=orange><code>Orange</code></button> <button data-md-color-accent=deep-orange><code>Deep Orange</code></button> </div> <script>
+  var buttons = document.querySelectorAll("button[data-md-color-accent]");
+  Array.prototype.forEach.call(buttons, function(button) {
+    button.addEventListener("click", function() {
+      document.body.dataset.mdColorAccent = this.dataset.mdColorAccent;
+      localStorage.setItem("data-md-color-accent",this.dataset.mdColorAccent);
+    })
+  })
+</script> <style>
+button[data-md-color-accent]> code {
+    background-color: var(--md-code-bg-color);
+    color: var(--md-accent-fg-color);
+  }
+button[data-md-color-primary] > code {
+    background-color: var(--md-code-bg-color);
+    color: var(--md-primary-fg-color);
+  }
+button[data-md-color-primary='white'] > code {
+    background-color: var(--md-primary-bg-color);
+    color: var(--md-primary-fg-color);
+  }
+button[data-md-color-accent],button[data-md-color-primary],button[data-md-color-scheme]{
+    width: 8.4rem;
+    margin-bottom: .4rem;
+    padding: 2.4rem .4rem .4rem;
+    transition: background-color .25s,opacity .25s;
+    border-radius: .2rem;
+    color: #fff;
+    font-size: .8rem;
+    text-align: left;
+    cursor: pointer;
+}
+button[data-md-color-accent]{
+  background-color: var(--md-accent-fg-color);
+}
+button[data-md-color-primary]{
+  background-color: var(--md-primary-fg-color);
+}
+button[data-md-color-scheme='default']{
+  background-color: hsla(0, 0%, 100%, 1);
+}
+button[data-md-color-scheme='slate']{
+  background-color: var(--md-default-bg-color);
+}
+button[data-md-color-accent]:hover, button[data-md-color-primary]:hover {
+    opacity: .75;
+}
+</style> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-copyright> <div class=md-copyright__highlight> Copyright &copy; 2023 - 2024 AI Wiki Team </div> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"base": ".", "features": ["navigation.tabs", "navigation.tabs.sticky", "search.suggest", "search.highlight", "search.share"], "search": "assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script> <script src=assets/javascripts/bundle.bd41221c.min.js></script> <script src=https://cdnjs.loli.net/ajax/libs/pangu/3.3.0/pangu.min.js></script> <script src=static/js/extra.js></script> <script src="https://cdnjs.loli.net/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script> </body> </html>

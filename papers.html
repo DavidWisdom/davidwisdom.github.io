@@ -2,16 +2,25 @@
 <p>这里记录近期 AI 论文的阅读摘记，主要跟踪 Hugging Face Daily Papers、arXiv 与相关开源项目。页面保持 AI Wiki 的普通文档结构，按日期沉淀论文脉络，不做筛选器和搜索工具。</p>
 <h2 id="2026-07-06">2026-07-06<a class="headerlink" href="#2026-07-06" title="Permanent link">&para;</a></h2>
 <h3 id="embodied-cpp">Embodied.cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots<a class="headerlink" href="#embodied-cpp" title="Permanent link">&para;</a></h3>
-<p><strong>论文链接：</strong><a href="https://arxiv.org/abs/2607.02501">arXiv:2607.02501</a></p>
-<p><strong>方向：</strong>具身智能、机器人部署、VLA、World-Action Model、C++ 推理运行时。</p>
-<p><strong>为什么值得读：</strong>当前很多具身智能模型虽然能力越来越强，但落到机器人部署时经常被模型专属 Python 栈、后端假设、设备差异和控制循环打散。Embodied.cpp 试图把这类系统抽象成一个统一的 C++ 运行时，让 VLA 与 WAM 这类模型能在异构机器人和边缘设备上以更低延迟运行。</p>
-<p><strong>核心想法：</strong>论文把具身模型部署拆成输入适配、序列构建、骨干网络执行、头部插件和部署适配五层。这个分层把不同模型之间的共性执行路径固定下来，同时允许不同机器人、传感器、控制头和推理后端通过插件接入。</p>
-<p><strong>读后速记：</strong>这篇论文的价值不在于提出一个新的大模型结构，而在于补上“模型到机器人闭环执行”的工程层。对于具身智能，batch-1 低延迟、多频率执行和硬件异构，比普通请求响应式推理服务更关键。</p>
+<p><strong>论文链接：</strong><a href="https://arxiv.org/abs/2607.02501">arXiv:2607.02501</a>。方向：具身智能、机器人部署、VLA、World-Action Model、C++ 推理运行时。</p>
+<h4 id="embodied-cpp-problem">问题背景<a class="headerlink" href="#embodied-cpp-problem" title="Permanent link">&para;</a></h4>
+<p>当前具身智能模型已经从单纯的视觉语言模型发展到 VLA 与 World-Action Model，但真正部署到机器人时，系统往往被模型专属 Python 栈、固定后端假设、传感器接口和机器人控制代码拆得很碎。普通推理服务更关注请求-响应吞吐，而机器人需要在闭环控制中稳定运行：低延迟、batch-1、多频率执行、硬件异构和动作接口扩展都比离线 benchmark 更关键。</p>
+<h4 id="embodied-cpp-method">核心方法<a class="headerlink" href="#embodied-cpp-method" title="Permanent link">&para;</a></h4>
+<p>Embodied.cpp 的核心不是提出一个新模型，而是抽象出 VLA/WAM 的共同执行路径，并用一个可移植 C++ runtime 承接模型到机器人系统之间的工程层。它把部署流程拆成五层：输入适配器、序列构建器、骨干网络执行、头部插件、部署适配器。这样模型主体、传感器输入、动作头和机器人平台可以分开演进。</p>
+<h4 id="embodied-cpp-architecture">五层架构<a class="headerlink" href="#embodied-cpp-architecture" title="Permanent link">&para;</a></h4>
 <ul>
-<li>适合和 <a href="self-driving/">具身智能</a>、VLA、机器人系统部署一起读。</li>
-<li>如果后续站点扩展具身智能栏目，可以把它作为“模型部署运行时”方向的入口论文。</li>
-<li>关键词：portable runtime、closed-loop control、heterogeneous robots、latency-first inference。</li>
+<li><strong>Input Adapters：</strong>把图像、语言、机器人状态等异构输入转换成模型可消费的统一表示。</li>
+<li><strong>Sequence Builders：</strong>负责构造 VLA/WAM 所需的 token、状态序列或时序上下文。</li>
+<li><strong>Backbone Execution：</strong>把主干模型执行封装到统一后端抽象下，避免每个模型绑定一套部署栈。</li>
+<li><strong>Head Plugins：</strong>把不同动作预测头、世界模型头或控制头做成插件，方便扩展新模型。</li>
+<li><strong>Deployment Adapters：</strong>对接真实机器人、边缘设备或仿真器，让同一套 runtime 面向不同平台。</li>
 </ul>
+<h4 id="embodied-cpp-system">系统设计重点<a class="headerlink" href="#embodied-cpp-system" title="Permanent link">&para;</a></h4>
+<p>论文强调三件事：第一，多频率执行，因为感知、语言条件、动作控制不一定以同样频率运行；第二，延迟优先的融合推理，因为机器人闭环控制通常是 batch-1 场景，不能只追求服务器吞吐；第三，可扩展的 operator 和 I/O 支持，因为具身模型输入输出不只是固定 token，还包括动作、状态、轨迹和机器人接口。</p>
+<h4 id="embodied-cpp-results">实验结果<a class="headerlink" href="#embodied-cpp-results" title="Permanent link">&para;</a></h4>
+<p>论文在两个 VLA 模型 HY-VLA 与 pi0.5 上做闭环部署，报告的任务成功率分别为 100.0% 和 91.0%。在一个初步 WAM benchmark 中，LingBot-VA Transformer block 的内存占用从 312.2 MiB 降到 88.1 MiB。这说明它的价值主要体现在部署效率和系统可移植性，而不是单纯刷模型精度。</p>
+<h4 id="embodied-cpp-takeaway">读后判断<a class="headerlink" href="#embodied-cpp-takeaway" title="Permanent link">&para;</a></h4>
+<p>这篇适合作为具身智能“模型部署运行时”方向的入口论文。它提醒我们：VLA/WAM 如果要进入真实机器人，关键瓶颈不只在模型能力，还在 runtime contract，也就是模型如何以可控延迟、稳定接口和跨硬件方式参与闭环控制。</p>
 <h2 id="reading-template">记录模板<a class="headerlink" href="#reading-template" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>论文：</strong>标题、链接、作者与日期。</li>
